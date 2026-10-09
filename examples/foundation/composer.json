@@ -3,7 +3,7 @@
     "description": "What each service shares with the others: contracts, RPC clients, event payloads, copies.",
     "type": "library",
     "require": {
-        "mbiakova/laravel-microservices": "*"
+        "mk-josias/laravel-microservices": "*"
     },
     "autoload": {
         "psr-4": {
