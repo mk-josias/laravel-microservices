@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Microservices\Events;
 
+use Microservices\Contracts\Stream\Event as EventContract;
+
 /**
  * Base for events: a concrete event returns its name and its typed payload as an array. Nothing
  * else — identity, emitting service, propagated context and timestamp are the Envelope's
  * business, so the payload stays business only.
  */
-abstract class Event
+abstract class Event implements EventContract
 {
     abstract public function name(): string;
 

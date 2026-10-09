@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Microservices\Contracts\Stream;
 
-use Microservices\Events\Event;
-
 /**
  * The single seam services emit events through. The binding decides what emitting means —
  * straight to the transport, or through the outbox — and service code never knows which.

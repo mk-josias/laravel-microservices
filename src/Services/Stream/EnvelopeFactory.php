@@ -7,8 +7,8 @@ namespace Microservices\Services\Stream;
 use Illuminate\Support\Facades\Context;
 use Microservices\Config\Streamer;
 use Microservices\Contracts\Colocation;
+use Microservices\Contracts\Stream\Event;
 use Microservices\Data\Envelope;
-use Microservices\Events\Event;
 use Microservices\Exceptions\ServiceException;
 
 /** Stamps an event with its emitting service and the propagated context — the only place that does. */

@@ -7,7 +7,7 @@ namespace Microservices\Data;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
-use Microservices\Events\Event;
+use Microservices\Contracts\Stream\Event;
 
 /**
  * The wire contract. Every transport carries this shape and nothing else — that is what makes

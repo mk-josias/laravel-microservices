@@ -6,7 +6,7 @@ namespace Microservices\Services\Stream;
 
 use Microservices\Config\Streamer;
 use Microservices\Contracts\Stream\Bus;
-use Microservices\Events\Event;
+use Microservices\Contracts\Stream\Event;
 use Microservices\Services\Stream\Outbox\Writer;
 
 /**

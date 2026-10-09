@@ -189,6 +189,8 @@ A copy created after the source had data is filled with `microservices:shadows:w
 | carry events on Kafka, RabbitMQ, another package | `Contracts\Stream\Transport` | `TransportManager::extend()` |
 | carry calls on gRPC, an existing REST API | `Contracts\Rpc\RpcTransport` | `RpcTransportManager::extend()` |
 | run several services in one process | `Contracts\Colocation` | the container (laravel-distributable-modules does) |
+| emit an object that already extends another class | `Contracts\Stream\Event` (`Events\Event` implements it with defaults) | nothing: `Bus::emit()` takes the interface |
+| emit differently (another outbox, a log of every emission) | `Contracts\Stream\Bus` | the container |
 
 ## License
 
