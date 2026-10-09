@@ -4,7 +4,7 @@
 foundation/   example/foundation, required by both: what billing shares
               Billing/Contracts/BillingService   Billing/Services/BillingRpcService   Billing/Shadows/CustomerShadow
 billing/      answers BillingService; its Customer model is the source of a copy
-orders/       calls BillingService over RPC; keeps billing's customers in orders_customers
+orders/       calls BillingService over RPC; keeps billing's customers (CustomerShadow, listed in its config/microservices.php)
 ```
 
 ```bash

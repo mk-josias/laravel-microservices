@@ -9,6 +9,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Microservices\Providers\MicroservicesServiceProvider;
 use Microservices\Testing\InteractsWithServices;
+use Microservices\Tests\Fixtures\App\Models\CustomerShadow;
 use Microservices\Tests\Fixtures\App\Providers\OrdersServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -36,6 +37,7 @@ abstract class TestCase extends Orchestra
         $config->set('microservices.services', [
             'billing' => ['host' => 'http://billing.test', 'namespace' => 'Microservices\Tests\Fixtures\Billing'],
         ]);
+        $config->set('microservices.shadows', [CustomerShadow::class]);
         $config->set('microservices.rpc.secret', 'test-secret');
         $config->set('microservices.events.streams.default.driver', 'array');
     }

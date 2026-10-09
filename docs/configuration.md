@@ -8,6 +8,7 @@ package reads it only through the classes in `Microservices\Config\`: `Services`
 |---|---|---|
 | `name` | `env('MICROSERVICES_NAME')` | this application's name among the services: the emitter of its events, the first segment of its RPC routes |
 | `services` | `[]` | `'billing' => ['host' => …, 'namespace' => …]`: every other service. `host` is a URL or `['url' => …, 'transport' => …]` |
+| `shadows` | `[]` | the copies this service keeps: `ShadowModel` classes, or `'service' => [...]` for several services in one process |
 | `rpc.transport` | `env('MICROSERVICES_RPC_TRANSPORT', 'http')` | transport used when a host doesn't name one |
 | `rpc.transports` | `http` | named transports, each with a `driver` and its options |
 | `rpc.secret` | `env('MICROSERVICES_RPC_SECRET', env('APP_KEY'))` | signs every call; must be the same in every service |

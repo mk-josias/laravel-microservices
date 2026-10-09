@@ -21,6 +21,11 @@ return [
         // 'billing' => ['host' => env('BILLING_HOST'), 'namespace' => 'Billing'],
     ],
 
+    // The copies this service keeps of other services' tables (ShadowModel classes), or service => copies.
+    'shadows' => [
+        // \Billing\Shadows\CustomerShadow::class,
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Calls between services

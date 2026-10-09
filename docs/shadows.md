@@ -14,16 +14,21 @@ final class Customer extends Model implements \Microservices\Contracts\Shadows\S
 }
 
 // foundation: the copy as billing describes it, for every service that keeps one
-abstract class CustomerShadow extends \Microservices\Models\ShadowModel
+class CustomerShadow extends \Microservices\Models\ShadowModel
 {
     public static function owner(): string { return 'billing'; }
 
     public static function sourceTable(): string { return 'customers'; }
 }
 
-// orders: its copy, in the orders_customers table; it must live under app/, where copies are found
-final class Customer extends \Foundation\Billing\Shadows\CustomerShadow {}
+// orders, config/microservices.php: the copies it keeps, in its own database
+'shadows' => [\Foundation\Billing\Shadows\CustomerShadow::class],
 ```
+
+A keeper lists the foundation's class as it is, or a subclass of its own that adds relations,
+casts or a `beforeSync()`. Two forms of one source need two tables: the second sets `$table` and
+brings its own migration. A copy is a model like any other: it reads the database of the service
+running, so it is read inside that service.
 
 The keeper creates the copy's table with a migration extending
 `Microservices\Migrations\ShadowMigration`, whose `table()` is the name the keeper's copy model reads: the source's own, or its `$table`. The copy has

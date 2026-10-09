@@ -9,7 +9,7 @@ use Microservices\Contracts\Stream\Handler;
 use Microservices\Contracts\Stream\Idempotent;
 use Microservices\Services\Shadows\ShadowRegistry;
 
-/** Writes an announced source row into the copies of the consuming service, or of every local one. */
+/** Writes an announced source row into the copies of the consuming service, or of every local keeper, each in its own context. */
 final readonly class SyncShadows implements Handler, Idempotent
 {
     public function __construct(
@@ -19,12 +19,18 @@ final readonly class SyncShadows implements Handler, Idempotent
 
     public function handle(string $name, array $payload): void
     {
+        $source = (string) $payload['source'];
         /** @var array<string, mixed> $attributes */
         $attributes = (array) ($payload['attributes'] ?? []);
-        $key = $payload['key'];
+        $key = is_int($payload['key']) ? $payload['key'] : (string) $payload['key'];
+        $current = $this->colocation->current();
 
-        foreach ($this->catalog->shadowsOf((string) $payload['source'], $this->colocation->current()) as $shadow) {
-            $shadow::sync(is_int($key) ? $key : (string) $key, $attributes);
+        foreach ($current !== null ? [$current] : $this->catalog->keepersOf($source) as $keeper) {
+            $this->colocation->within($keeper, function () use ($source, $keeper, $key, $attributes): void {
+                foreach ($this->catalog->shadowsOf($source, $keeper) as $shadow) {
+                    $shadow::sync($key, $attributes);
+                }
+            });
         }
     }
 }

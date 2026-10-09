@@ -143,15 +143,15 @@ final class Customer extends Model implements \Microservices\Contracts\Shadows\S
 // in the foundation: the copy as billing describes it
 namespace Foundation\Billing\Shadows;
 
-abstract class CustomerShadow extends \Microservices\Models\ShadowModel
+class CustomerShadow extends \Microservices\Models\ShadowModel
 {
     public static function owner(): string { return 'billing'; }
 
     public static function sourceTable(): string { return 'customers'; }
 }
 
-// in orders: its copy, in the orders_customers table
-final class Customer extends \Foundation\Billing\Shadows\CustomerShadow {}
+// in orders, config/microservices.php: the copies it keeps
+'shadows' => [\Foundation\Billing\Shadows\CustomerShadow::class],
 
 // in orders: the migration of that table
 return new class extends \Microservices\Migrations\ShadowMigration

@@ -6,13 +6,11 @@ namespace Microservices\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Microservices\Contracts\Colocation;
-use Microservices\Exceptions\ServiceException;
 
 /**
  * A local, read-only copy of another service's rows: same key as the source row, soft-deleted
- * when the source is, written only through sync(). Each service keeping a copy declares it once,
- * so the copy is a table of the keeper's database, named after its source table unless the keeper sets $table.
+ * when the source is, written only through sync(). A service keeping it lists it in microservices.shadows;
+ * like any model it reads the running service's database, under its source's name unless $table says otherwise.
  *
  * @phpstan-consistent-constructor
  */
@@ -34,20 +32,7 @@ abstract class ShadowModel extends Model
     /** The source table this copy mirrors, e.g. `iam_users`. */
     abstract public static function sourceTable(): string;
 
-    /** The service keeping this copy: the one its class belongs to. */
-    public static function keeper(): string
-    {
-        return app(Colocation::class)->serviceOf(static::class)
-            ?? throw ServiceException::outsideService(static::class);
-    }
-
-    /** Written by a package handler that serves every keeper at once: the keeper is pinned here, not by the context. */
-    public function getConnectionName(): ?string
-    {
-        return app(Colocation::class)->connection(static::keeper());
-    }
-
-    /** The source's own name, in the keeper's database; a keeper sharing its database with the owner sets $table. */
+    /** The source's own name; a keeper sharing its database with the owner, or keeping a second form of it, sets $table. */
     public function getTable(): string
     {
         return $this->table ?? static::sourceTable();

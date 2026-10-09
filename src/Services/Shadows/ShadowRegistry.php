@@ -8,14 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Microservices\Contracts\Colocation;
 use Microservices\Contracts\Shadows\Shadowed;
 use Microservices\Models\ShadowModel;
-use ReflectionClass;
 
-/** Finds, among the services this process runs, the copies of a source table and its source model. */
+/** Finds, among the services this process runs, the copies each one declares and the source models it owns. */
 class ShadowRegistry
 {
     public function __construct(protected readonly Colocation $colocation) {}
 
-    /** @return list<class-string<ShadowModel>> the concrete copies of $sourceTable kept here, or by $keeper alone */
+    /** @return list<class-string<ShadowModel>> the copies of $sourceTable kept here, or by $keeper alone */
     public function shadowsOf(string $sourceTable, ?string $keeper = null): array
     {
         return array_values(array_filter(
@@ -24,7 +23,7 @@ class ShadowRegistry
         ));
     }
 
-    /** @return list<class-string<ShadowModel>> every concrete copy the local services keep, or $keeper alone */
+    /** @return list<class-string<ShadowModel>> every copy the local services keep, or $keeper alone */
     public function localShadows(?string $keeper = null): array
     {
         $shadows = [];
@@ -34,6 +33,15 @@ class ShadowRegistry
         }
 
         return $shadows;
+    }
+
+    /** @return list<string> the local services keeping a copy of $sourceTable */
+    public function keepersOf(string $sourceTable): array
+    {
+        return array_values(array_filter(
+            $this->colocation->local(),
+            fn (string $service): bool => $this->shadowsOf($sourceTable, $service) !== [],
+        ));
     }
 
     /** The local source model of $sourceTable, if this process runs its owner (or $owner is it). */
@@ -53,31 +61,21 @@ class ShadowRegistry
         return null;
     }
 
-    /** @return list<class-string<ShadowModel>> */
-    public function scanShadows(string $service): array
-    {
-        $shadows = [];
-
-        foreach (microservices_classes_with(ShadowModel::class, $this->colocation->classPath($service)) as $class) {
-            if (! (new ReflectionClass($class))->isAbstract()) {
-                /** @var class-string<ShadowModel> $class */
-                $shadows[] = $class;
-            }
-        }
-
-        return $shadows;
-    }
-
     /** @return list<class-string> */
     public function scanSources(string $service): array
     {
         return microservices_classes_with(Shadowed::class, $this->colocation->classPath($service));
     }
 
-    /** @return list<class-string<ShadowModel>> */
+    /** @return list<class-string<ShadowModel>> microservices.shadows: this service's list, or its entry when keyed by service */
     protected function kept(string $service): array
     {
-        return $this->scanShadows($service);
+        $declared = (array) config('microservices.shadows', []);
+
+        /** @var list<class-string<ShadowModel>> */
+        return array_values(array_is_list($declared)
+            ? ($service === config('microservices.name') ? $declared : [])
+            : (array) ($declared[$service] ?? []));
     }
 
     /** @return list<class-string> */
