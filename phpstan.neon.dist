@@ -9,7 +9,11 @@ parameters:
     # The Pest files themselves are out: Pest binds $this inside closures at runtime, which
     # static analysis cannot follow — running the suite is what verifies those.
     paths:
-        - src
-        - database
-        - tests/Fixtures
-        - tests/TestCase.php
+        - packages/core/src
+        - packages/core/database
+        - packages/core/tests/Fixtures
+        - packages/core/tests/TestCase.php
+        - packages/redis-event-stream/src
+        - packages/redis-event-stream/tests/TestCase.php
+        - packages/queue-event-stream/src
+        - packages/queue-event-stream/tests/TestCase.php

@@ -5,13 +5,21 @@
          cacheDirectory=".phpunit.cache"
          colors="true">
     <testsuites>
-        <testsuite name="Microservices">
-            <directory>tests</directory>
+        <testsuite name="Core">
+            <directory>packages/core/tests</directory>
+        </testsuite>
+        <testsuite name="RedisEventStream">
+            <directory>packages/redis-event-stream/tests</directory>
+        </testsuite>
+        <testsuite name="QueueEventStream">
+            <directory>packages/queue-event-stream/tests</directory>
         </testsuite>
     </testsuites>
     <source>
         <include>
-            <directory>src</directory>
+            <directory>packages/core/src</directory>
+            <directory>packages/redis-event-stream/src</directory>
+            <directory>packages/queue-event-stream/src</directory>
         </include>
     </source>
 </phpunit>

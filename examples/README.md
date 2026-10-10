@@ -1,22 +1,30 @@
-# Example: two applications and their foundation
+# Example: three applications, their foundation and a gateway
 
 ```
-foundation/   example/foundation, required by both: what billing shares
-              Billing/Contracts/BillingService   Billing/Services/BillingRpcService   Billing/Shadows/CustomerShadow
-billing/      answers BillingService; its Customer model is the source of a copy
-orders/       calls BillingService over RPC; keeps billing's customers (CustomerShadow, listed in its config/microservices.php)
+ client ── Bearer token ──► gateway/ (Node, :8000) ── X-Identity: {id}.{exp}.{hmac} ──► notifications/ (:8002)
+                                 │ RPC findUserByToken                                  GET /notifications
+                                 ▼
+ iam/ (:8001) ── users:register ──► stream ──► notifications/ ──► stream ──► analytics/
+   User, source of UserShadow   shadow.changed   copy of users;  mail.sent   RecordSignup
+                                user.registered  SendWelcome                 RecordMail
+```
+
+```
+foundation/   example/foundation, required by the three: what they share
+              Iam/Contracts/IamService  Iam/Services/IamRpcService  Iam/Shadows/UserShadow  Iam/Auth/GatewayTokens
+              Iam/Events/UserRegistered  Notifications/Events/MailSent
 ```
 
 ```bash
-./run.sh   # needs PHP 8.4, Composer and Redis on localhost
+./run.sh   # needs PHP 8.4, Composer, Node 18+ and Redis on localhost
 ```
 
-It installs both applications, starts billing on `127.0.0.1:8001` and the event consumer of
-orders, then creates a customer in billing. Orders prints it twice: from its own copy, filled by the
-event, and from billing, over RPC.
+It installs the three applications, starts iam and notifications, both consumers and the gateway,
+then registers a user in iam. Notifications mails a welcome to the address in its own copy of the
+user; analytics counts the registration and the mail; the client reads its inbox through the
+gateway, which turns a wrong token away with a 401.
 
 ```
-Customer 1 created.
-copy: Ada
-rpc: Ada
+inbox: ["welcome"]
+signups: 1, mails: 1
 ```

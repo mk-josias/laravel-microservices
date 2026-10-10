@@ -1,22 +1,8 @@
 {
-    "name": "mk-josias/laravel-microservices",
-    "description": "Laravel apps as microservices: signed RPC through contracts, ordered events with an outbox, and read-only copies of another service's rows.",
+    "name": "mk-josias/laravel-microservices-monorepo",
+    "description": "Development of laravel-microservices and its drivers; each package under packages/ is published on its own.",
     "license": "MIT",
-    "type": "library",
-    "keywords": [
-        "laravel",
-        "microservices",
-        "rpc",
-        "events",
-        "outbox",
-        "redis-streams"
-    ],
-    "authors": [
-        {
-            "name": "Josias Mekontso",
-            "email": "josiasmekontso.it@gmail.com"
-        }
-    ],
+    "type": "project",
     "require": {
         "php": "^8.4",
         "laravel/framework": "^12.0 || ^13.0"
@@ -27,27 +13,21 @@
         "orchestra/testbench": "^10.0 || ^11.0",
         "pestphp/pest": "^3.0 || ^4.0"
     },
-    "suggest": {
-        "ext-redis": "Required by the redis events transport (predis/predis works too)"
-    },
     "autoload": {
         "psr-4": {
-            "Microservices\\": "src/"
+            "Microservices\\": "packages/core/src/",
+            "RedisEventStream\\": "packages/redis-event-stream/src/",
+            "QueueEventStream\\": "packages/queue-event-stream/src/"
         },
         "files": [
-            "src/helpers.php"
+            "packages/core/src/helpers.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Microservices\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Microservices\\Providers\\MicroservicesServiceProvider"
-            ]
+            "Microservices\\Tests\\": "packages/core/tests/",
+            "RedisEventStream\\Tests\\": "packages/redis-event-stream/tests/",
+            "QueueEventStream\\Tests\\": "packages/queue-event-stream/tests/"
         }
     },
     "scripts": {
