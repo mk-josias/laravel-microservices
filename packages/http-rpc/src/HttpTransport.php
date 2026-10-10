@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Microservices\Transports\Rpc;
+namespace HttpRpc;
 
 use Illuminate\Http\Client\Factory as Http;
 use Illuminate\Support\Facades\Context;
 use Microservices\Config\Rpc;
 use Microservices\Config\Streamer;
 use Microservices\Contracts\Rpc\Transport;
-use Microservices\Services\Rpc\RpcSignature;
 
 /** POST {host}/{service}/rpc/{method} with {contract, arguments}, signed, carrying the propagated context. */
 final readonly class HttpTransport implements Transport
@@ -17,13 +16,14 @@ final readonly class HttpTransport implements Transport
     public function __construct(
         private Http $http,
         private Rpc $rpc,
+        private HttpRpc $config,
         private Streamer $streamer,
         private RpcSignature $signature,
     ) {}
 
     public function invoke(string $service, string $contract, string $method, array $arguments = []): mixed
     {
-        $path = '/'.strtr($this->rpc->getPath(), ['{service}' => $service, '{method}' => $method]);
+        $path = '/'.strtr($this->config->getPath(), ['{service}' => $service, '{method}' => $method]);
         $body = json_encode(['contract' => $contract, 'arguments' => (object) $arguments], JSON_THROW_ON_ERROR);
         $context = json_encode(Context::only($this->streamer->getPropagate()), JSON_THROW_ON_ERROR);
 

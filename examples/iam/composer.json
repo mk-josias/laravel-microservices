@@ -5,10 +5,16 @@
         "php": "^8.4",
         "example/foundation": "*",
         "laravel/framework": "^12.0 || ^13.0",
+        "mk-josias/http-rpc": "*",
         "mk-josias/laravel-microservices": "*",
         "mk-josias/redis-event-stream": "*"
     },
     "repositories": {
+        "http-rpc": {
+            "type": "path",
+            "url": "../../packages/http-rpc",
+            "options": {"versions": {"mk-josias/http-rpc": "0.1.0"}}
+        },
         "redis-event-stream": {
             "type": "path",
             "url": "../../packages/redis-event-stream",

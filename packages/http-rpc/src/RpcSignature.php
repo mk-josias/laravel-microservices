@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Microservices\Services\Rpc;
+namespace HttpRpc;
 
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Support\Str;
-use Microservices\Config\Rpc;
 
 /** Signs and checks calls between services: an HMAC over the timestamp, nonce, path, body and context. */
 final readonly class RpcSignature
@@ -20,7 +19,7 @@ final readonly class RpcSignature
     public const string CONTEXT_HEADER = 'X-Rpc-Context';
 
     public function __construct(
-        private Rpc $config,
+        private HttpRpc $config,
         private Cache $cache,
     ) {}
 

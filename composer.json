@@ -16,6 +16,7 @@
     "autoload": {
         "psr-4": {
             "Microservices\\": "packages/core/src/",
+            "HttpRpc\\": "packages/http-rpc/src/",
             "RedisEventStream\\": "packages/redis-event-stream/src/",
             "QueueEventStream\\": "packages/queue-event-stream/src/"
         },
@@ -26,6 +27,7 @@
     "autoload-dev": {
         "psr-4": {
             "Microservices\\Tests\\": "packages/core/tests/",
+            "HttpRpc\\Tests\\": "packages/http-rpc/tests/",
             "RedisEventStream\\Tests\\": "packages/redis-event-stream/tests/",
             "QueueEventStream\\Tests\\": "packages/queue-event-stream/tests/"
         }

@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Microservices\Http\Middleware;
+namespace HttpRpc;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Context;
-use Microservices\Services\Rpc\RpcSignature;
 use Symfony\Component\HttpFoundation\Response;
 
 /** Guards the RPC routes: only a correctly signed, fresh call gets through. */

@@ -13,6 +13,8 @@ parameters:
         - packages/core/database
         - packages/core/tests/Fixtures
         - packages/core/tests/TestCase.php
+        - packages/http-rpc/src
+        - packages/http-rpc/tests/TestCase.php
         - packages/redis-event-stream/src
         - packages/redis-event-stream/tests/TestCase.php
         - packages/queue-event-stream/src

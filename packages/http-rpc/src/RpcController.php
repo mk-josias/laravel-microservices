@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Microservices\Http\Controllers;
+namespace HttpRpc;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Microservices\Exceptions\ServiceException;
 use Microservices\Services\Rpc\LocalServices;
 
-/** The called side of Transports\Rpc\HttpTransport: POST {service}/rpc/{method}, already verified by the `rpc` group. */
+/** The called side of HttpTransport: POST {service}/rpc/{method}, already verified by the `rpc` group. */
 final readonly class RpcController
 {
     public function __construct(private LocalServices $services) {}
