@@ -52,9 +52,25 @@ abstract class ShadowModel extends Model
         $shadow = static::query()->withoutGlobalScopes()->find($key) ?? new static;
         $shadow->syncing = true;
 
+        if (! static::shouldBeShadowed($attributes)) {
+            $shadow->exists && $shadow->forceDelete();
+
+            return;
+        }
+
         $shadow->forceFill([...static::beforeSync($attributes, $shadow->exists ? $shadow : null), $shadow->getKeyName() => $key])->save();
 
         $shadow->syncing = false;
+    }
+
+    /**
+     * Whether this copy keeps the announced row; a row it stops keeping leaves the copy.
+     *
+     * @param  array<string, mixed>  $attributes  the row as the source announced it
+     */
+    protected static function shouldBeShadowed(array $attributes): bool
+    {
+        return true;
     }
 
     /**

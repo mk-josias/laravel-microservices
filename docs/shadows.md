@@ -56,7 +56,18 @@ billing: Customer saved / deleted ─► microservices.shadow.changed ─► ord
 
 A copy rejects any write that doesn't come from `sync()`, and a deleted source row becomes a soft
 delete in the copy. Override `beforeSync()` to derive what the copy needs and the source never
-announced. To fill a copy created after the source already had data:
+announced, and `shouldBeShadowed()` to keep only some rows: a row it returns `false` for is never
+written, and leaves the copy if it was there.
+
+```php
+// analytics keeps only the administrators
+protected static function shouldBeShadowed(array $attributes): bool
+{
+    return (bool) $attributes['is_admin'];
+}
+```
+
+To fill a copy created after the source already had data:
 
 ```bash
 php artisan shadows:want [--keepers=orders] [--sources=customers]   # on the keeper: ask the owners to send their rows again

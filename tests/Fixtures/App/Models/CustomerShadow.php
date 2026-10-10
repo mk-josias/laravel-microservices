@@ -18,4 +18,9 @@ final class CustomerShadow extends ShadowModel
     {
         return 'customers';
     }
+
+    protected static function shouldBeShadowed(array $attributes): bool
+    {
+        return ($attributes['name'] ?? null) !== 'Hidden';
+    }
 }

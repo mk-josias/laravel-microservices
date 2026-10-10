@@ -32,6 +32,14 @@ it('soft-deletes the copy of a row deleted at the source', function () {
         ->and(CustomerShadow::query()->withTrashed()->count())->toBe(1);
 });
 
+it('keeps only the rows its copy wants, and drops a row that stops matching', function () {
+    app(Dispatcher::class)->dispatch(customerChanged(3, ['name' => 'Ada']), 'orders');
+    app(Dispatcher::class)->dispatch(customerChanged(4, ['name' => 'Hidden']), 'orders');
+    app(Dispatcher::class)->dispatch(customerChanged(3, ['name' => 'Hidden']), 'orders');
+
+    expect(CustomerShadow::query()->withTrashed()->count())->toBe(0);
+});
+
 it('never writes the copy outside a sync', function () {
     expect((new CustomerShadow(['id' => 1, 'name' => 'Ada']))->save())->toBeFalse();
 });

@@ -30,7 +30,9 @@ final class PruneConsumptions extends Command
 
         $before = Date::now()->subDays($days);
 
-        foreach ($colocation->local() as $service) {
+        $current = $colocation->current();
+
+        foreach ($current !== null ? [$current] : $colocation->local() as $service) {
             try {
                 $deleted = $colocation->within($service, static fn (): int => DB::table('event_consumptions')->where('consumed_at', '<', $before)->delete());
                 $this->line("→ {$service}: {$deleted} deleted");
