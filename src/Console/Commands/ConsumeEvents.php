@@ -19,7 +19,7 @@ use Microservices\Services\Stream\TransportManager;
  */
 final class ConsumeEvents extends Command
 {
-    protected $signature = 'microservices:events:consume
+    protected $signature = 'stream:consume
         {--service= : The consuming service (default: the one running, or the only local one)}
         {--stream= : The stream to read (default: microservices.events.stream)}';
 

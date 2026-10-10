@@ -13,7 +13,7 @@ use Microservices\Services\Shadows\ShadowRegistry;
 /** Run by a service keeping copies: asks the owner of each source table to announce what it holds. */
 final class WantShadows extends Command
 {
-    protected $signature = 'microservices:shadows:want
+    protected $signature = 'shadows:want
         {--keepers=* : Only these services ask for their copies (default: every local keeper)}
         {--sources=* : Only these source tables (default: every one they copy)}';
 

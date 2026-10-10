@@ -68,10 +68,10 @@ return [
 
         'streams' => [
 
-            // Nothing is trimmed on write: microservices:events:trim drops only what every consumer group acknowledged.
+            // Nothing is trimmed on write: stream:trim drops only what every consumer group acknowledged.
             'default' => [
                 'driver' => env('MICROSERVICES_STREAM_DRIVER', 'redis'),
-                'outbox' => env('MICROSERVICES_STREAM_OUTBOX', false), // true: written with the business transaction, published by microservices:events:publish
+                'outbox' => env('MICROSERVICES_STREAM_OUTBOX', false), // true: written with the business transaction, published by stream:publish
                 'connection' => env('MICROSERVICES_STREAM_CONNECTION'), // null: the driver's own default connection
                 'key' => 'microservices:events', // the Redis stream every service writes to, or the queue prefix
                 'block' => 5_000,           // read block window, ms

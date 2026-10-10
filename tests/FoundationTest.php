@@ -13,7 +13,7 @@ afterEach(function () {
 });
 
 it('creates the shared package with a folder for this service', function () {
-    $this->artisan("microservices:foundation {$this->root} --package=acme/foundation")->assertSuccessful();
+    $this->artisan("foundation:make {$this->root} --package=acme/foundation")->assertSuccessful();
 
     $composer = json_decode((string) file_get_contents($this->root.'/composer.json'), true);
 
@@ -27,7 +27,7 @@ it('adds a service to an existing package without touching its composer.json', f
     File::ensureDirectoryExists($this->root);
     file_put_contents($this->root.'/composer.json', '{"name": "acme/shared"}');
 
-    $this->artisan("microservices:foundation {$this->root}")
+    $this->artisan("foundation:make {$this->root}")
         ->expectsOutputToContain('composer require acme/shared:@dev')
         ->assertSuccessful();
 
@@ -38,7 +38,7 @@ it('adds a service to an existing package without touching its composer.json', f
 it('refuses to run before the service is named', function () {
     config()->set('microservices.name', null);
 
-    $this->artisan("microservices:foundation {$this->root}")->assertFailed();
+    $this->artisan("foundation:make {$this->root}")->assertFailed();
 
     expect($this->root)->not->toBeDirectory();
 });

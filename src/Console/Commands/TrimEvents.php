@@ -10,7 +10,7 @@ use Microservices\Services\Stream\TransportManager;
 
 final class TrimEvents extends Command
 {
-    protected $signature = 'microservices:events:trim
+    protected $signature = 'stream:trim
         {--stream= : The stream to trim (default: microservices.events.stream)}';
 
     protected $description = 'Drop the stream entries every consumer has acknowledged.';

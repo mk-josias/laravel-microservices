@@ -11,7 +11,7 @@ use Microservices\Config\Services;
 /** The Composer package every service requires: under Foundation\{Service}\, what each one shares with the others. */
 final class MakeFoundation extends Command
 {
-    protected $signature = 'microservices:foundation
+    protected $signature = 'foundation:make
         {path=../foundation : Directory of the shared package, relative to the application}
         {--package= : Its Composer name (default: {this application\'s vendor}/foundation)}';
 

@@ -57,8 +57,8 @@ billing/   orders/             the applications: each requires the foundation
 ```
 
 ```bash
-php artisan microservices:foundation ../foundation --package=acme/foundation   # in billing: creates it, adds src/Billing
-php artisan microservices:foundation ../foundation                             # in orders: adds src/Orders
+php artisan foundation:make ../foundation --package=acme/foundation   # in billing: creates it, adds src/Billing
+php artisan foundation:make ../foundation                             # in orders: adds src/Orders
 ```
 
 A service's implementation, models and migrations stay in its application. A new version of the
@@ -121,7 +121,7 @@ The consuming service lists its handlers and runs a consumer:
 ```
 
 ```bash
-php artisan microservices:events:consume
+php artisan stream:consume
 ```
 
 See [Events](docs/events.md) for the outbox, versions, streams and transports.
@@ -169,7 +169,7 @@ return new class extends \Microservices\Migrations\ShadowMigration
 };
 ```
 
-A copy created after the source had data is filled with `microservices:shadows:want`. See [Copies](docs/shadows.md).
+A copy created after the source had data is filled with `shadows:want`. See [Copies](docs/shadows.md).
 
 ## Documentation
 

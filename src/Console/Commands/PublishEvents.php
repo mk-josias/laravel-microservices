@@ -16,7 +16,7 @@ final class PublishEvents extends Command
 {
     use LocalServicesOption;
 
-    protected $signature = 'microservices:events:publish
+    protected $signature = 'stream:publish
         {--service=* : Limit the sweep to these services}
         {--batch=100 : Rows claimed per pass}
         {--sleep=1 : Seconds between passes}

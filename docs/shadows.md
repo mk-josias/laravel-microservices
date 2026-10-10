@@ -59,8 +59,8 @@ delete in the copy. Override `beforeSync()` to derive what the copy needs and th
 announced. To fill a copy created after the source already had data:
 
 ```bash
-php artisan microservices:shadows:want [--keepers=orders] [--sources=customers]   # on the keeper: ask the owners to send their rows again
-php artisan microservices:shadows:announce customers [--keepers=orders]          # on the owner: send every row again
+php artisan shadows:want [--keepers=orders] [--sources=customers]   # on the keeper: ask the owners to send their rows again
+php artisan shadows:announce customers [--keepers=orders]          # on the owner: send every row again
 ```
 
 Both commands address the event through its `recipients`, so only those services update their

@@ -17,7 +17,7 @@ final class RepublishEvents extends Command
 {
     use LocalServicesOption;
 
-    protected $signature = 'microservices:events:republish
+    protected $signature = 'stream:republish
         {--service=* : Limit to these services}
         {--since= : Only rows emitted on or after this date}
         {--force : Skip the confirmation}';

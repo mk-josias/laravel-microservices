@@ -14,7 +14,7 @@ done
 redis-cli del microservices:events > /dev/null
 
 (cd billing && exec php -S 127.0.0.1:8001 -t public > /dev/null 2>&1) & server=$!
-(cd orders && exec php artisan microservices:events:consume > /dev/null) & consumer=$!
+(cd orders && exec php artisan stream:consume > /dev/null) & consumer=$!
 trap 'kill $server $consumer 2> /dev/null' EXIT
 sleep 2
 

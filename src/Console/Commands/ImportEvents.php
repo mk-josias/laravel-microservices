@@ -11,8 +11,8 @@ use SplFileObject;
 /** Replays an export: its rows become pending publications again, put on the wire by the publisher. */
 final class ImportEvents extends Command
 {
-    protected $signature = 'microservices:events:import
-        {path : A file written by microservices:events:export}
+    protected $signature = 'stream:import
+        {path : A file written by stream:export}
         {--batch=1000 : Rows inserted per batch}';
 
     protected $description = 'Queue the rows of an export for publication again.';

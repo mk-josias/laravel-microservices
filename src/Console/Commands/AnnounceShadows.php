@@ -10,7 +10,7 @@ use Microservices\Services\Shadows\ShadowRegistry;
 /** Run by the owner of a source table: every row goes out again, for copies created after it. */
 final class AnnounceShadows extends Command
 {
-    protected $signature = 'microservices:shadows:announce
+    protected $signature = 'shadows:announce
         {source : The source table, e.g. iam_users}
         {--keepers=* : Only these services update their copy (default: every one keeping it)}';
 

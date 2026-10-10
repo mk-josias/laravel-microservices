@@ -7,7 +7,7 @@ handle it later, in their own consumer process.
 
 ```
 emitting service                         stream                    consuming service
-emit(Event) ─► Envelope ─► [outbox ─► publisher] ─► transport ─► microservices:events:consume
+emit(Event) ─► Envelope ─► [outbox ─► publisher] ─► transport ─► stream:consume
                            (table)    (process)     (redis …)     └► Dispatcher ─► handlers
 ```
 
@@ -116,8 +116,8 @@ ask the transport for more, through these interfaces:
 
 | Interface | Used by | Without it |
 |---|---|---|
-| `Contracts\Stream\TrimsStreams` | `microservices:events:trim` | the command trims nothing |
-| `Contracts\Stream\TracksAcknowledgements` | `microservices:events:export --acknowledged`, and the publisher, which records the id of each entry | `--acknowledged` fails; publishing works |
+| `Contracts\Stream\TrimsStreams` | `stream:trim` | the command trims nothing |
+| `Contracts\Stream\TracksAcknowledgements` | `stream:export --acknowledged`, and the publisher, which records the id of each entry | `--acknowledged` fails; publishing works |
 | `Contracts\Stream\RedeliversEnvelopes` | the consumption guard, turned on when delivery is at-least-once | the guard stays off unless the stream has an outbox |
 
 Redis keeps every entry until every consumer group has acknowledged it. Nothing is trimmed when
@@ -125,7 +125,7 @@ writing, so a stopped consumer or a service added later doesn't miss anything. R
 on a schedule:
 
 ```bash
-php artisan microservices:events:trim [--stream=default]
+php artisan stream:trim [--stream=default]
 ```
 
 ## The outbox
@@ -136,17 +136,17 @@ current transaction. The data and the event are committed or rolled back togethe
 process sends the rows to the stream:
 
 ```bash
-php artisan microservices:events:publish [--service=*] [--batch=100] [--sleep=1] [--once]
+php artisan stream:publish [--service=*] [--batch=100] [--sleep=1] [--once]
 ```
 
 Rows are published in `sequence` order, and a failing row stops the run. This only works with one
 publisher per service, so don't run two.
 
 ```bash
-php artisan microservices:events:republish [--service=*] [--since=2026-09-01] [--force]    # rebuild an emptied stream
-php artisan microservices:events:export storage/events.jsonl [--service=*] [--stream=default] [--until=2026-09-01] \
+php artisan stream:republish [--service=*] [--since=2026-09-01] [--force]    # rebuild an emptied stream
+php artisan stream:export storage/events.jsonl [--service=*] [--stream=default] [--until=2026-09-01] \
     [--where=name=orders.order.placed] [--where=payload.status=paid] [--acknowledged] [--batch=1000]
-php artisan microservices:events:import storage/events.jsonl [--batch=1000]
+php artisan stream:import storage/events.jsonl [--batch=1000]
 ```
 
 `export` moves published rows to a JSON-lines file; `import` puts them back as pending
@@ -155,7 +155,7 @@ publications, in file order. `--acknowledged` only exports what every consumer h
 ## Consuming
 
 ```bash
-php artisan microservices:events:consume [--service=billing] [--stream=default]
+php artisan stream:consume [--service=billing] [--stream=default]
 ```
 
 The command reads one stream as the consuming service, for every declared emitter on it. An entry

@@ -42,7 +42,7 @@ it('writes the event in the outbox with the business transaction, then publishes
     expect(app(Transport::class)->published())->toBe([])
         ->and(DB::table('event_publications')->where('emitter', 'orders')->whereNull('published_at')->count())->toBe(1);
 
-    $this->artisan('microservices:events:publish', ['--once' => true])->assertSuccessful();
+    $this->artisan('stream:publish', ['--once' => true])->assertSuccessful();
 
     expect(app(Transport::class)->published()[0]->name)->toBe('orders.order.placed')
         ->and(DB::table('event_publications')->whereNull('published_at')->count())->toBe(0);
@@ -65,7 +65,7 @@ it('consumes the stream as this service', function () {
     config()->set('microservices.events.listen', ['billing.invoice.paid' => [OnInvoicePaid::class]]);
     app(Transport::class)->publish(new Envelope('0191f3c2-8a41-7c2e-9b55-3f1c7d0a4e89', 'billing', 'billing.invoice.paid', ['order_id' => 9], [], now()->toImmutable()));
 
-    $this->artisan('microservices:events:consume')->expectsOutputToContain('Consuming as [orders] from: orders, billing')->assertSuccessful();
+    $this->artisan('stream:consume')->expectsOutputToContain('Consuming as [orders] from: orders, billing')->assertSuccessful();
 
     expect(DB::table('paid_orders')->pluck('order_id')->all())->toBe([9]);
 });

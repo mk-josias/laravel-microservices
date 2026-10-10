@@ -14,7 +14,7 @@ final class ExportEvents extends Command
 {
     use LocalServicesOption;
 
-    protected $signature = 'microservices:events:export
+    protected $signature = 'stream:export
         {path : The JSON-lines file to append to}
         {--service=* : Limit to these services}
         {--stream= : Only rows of this stream}
