@@ -15,7 +15,7 @@ parameters:
         - packages/core/tests/TestCase.php
         - packages/http-rpc/src
         - packages/http-rpc/tests/TestCase.php
-        - packages/redis-event-stream/src
-        - packages/redis-event-stream/tests/TestCase.php
-        - packages/queue-event-stream/src
-        - packages/queue-event-stream/tests/TestCase.php
+        - packages/redis-stream/src
+        - packages/redis-stream/tests/TestCase.php
+        - packages/queue-stream/src
+        - packages/queue-stream/tests/TestCase.php

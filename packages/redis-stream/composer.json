@@ -1,13 +1,13 @@
 {
-    "name": "mk-josias/queue-event-stream",
-    "description": "Laravel queue driver for the events of mk-josias/laravel-microservices, for a stack without Redis: one queue per service; order is not kept after a failure.",
+    "name": "mk-josias/laravel-microservices-redis-stream",
+    "description": "Redis Streams driver for the events of mk-josias/laravel-microservices: one ordered stream, a consumer group per service, failed entries retried before later ones.",
     "license": "MIT",
     "type": "library",
     "keywords": [
         "laravel",
         "microservices",
         "events",
-        "queue"
+        "redis-streams"
     ],
     "authors": [
         {
@@ -19,15 +19,18 @@
         "php": "^8.4",
         "mk-josias/laravel-microservices": "self.version"
     },
+    "suggest": {
+        "ext-redis": "PhpRedis client (predis/predis works too)"
+    },
     "autoload": {
         "psr-4": {
-            "QueueEventStream\\": "src/"
+            "RedisEventStream\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "QueueEventStream\\QueueEventStreamServiceProvider"
+                "RedisEventStream\\RedisEventStreamServiceProvider"
             ]
         }
     },

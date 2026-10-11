@@ -4,7 +4,7 @@ The `queue` events driver of [laravel-microservices](https://github.com/mk-josia
 connection (`database`, `sqs`, `beanstalkd`), for a stack without Redis.
 
 ```bash
-composer require mk-josias/queue-event-stream
+composer require mk-josias/laravel-microservices-queue-stream
 ```
 
 ```php

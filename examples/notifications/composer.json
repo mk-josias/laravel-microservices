@@ -6,13 +6,13 @@
         "example/foundation": "*",
         "laravel/framework": "^12.0 || ^13.0",
         "mk-josias/laravel-microservices": "*",
-        "mk-josias/redis-event-stream": "*"
+        "mk-josias/laravel-microservices-redis-stream": "*"
     },
     "repositories": {
-        "redis-event-stream": {
+        "redis-stream": {
             "type": "path",
-            "url": "../../packages/redis-event-stream",
-            "options": {"versions": {"mk-josias/redis-event-stream": "0.1.0"}}
+            "url": "../../packages/redis-stream",
+            "options": {"versions": {"mk-josias/laravel-microservices-redis-stream": "0.1.0"}}
         },
         "foundation": {
             "type": "path",

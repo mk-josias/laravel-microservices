@@ -3,7 +3,7 @@
 The `http` RPC driver of [laravel-microservices](https://github.com/mk-josias/laravel-microservices/tree/main/packages/core): signed calls between services.
 
 ```bash
-composer require mk-josias/http-rpc
+composer require mk-josias/laravel-microservices-http-rpc
 ```
 
 Its provider is discovered. It registers the driver of the shipped `http` transport, and serves
